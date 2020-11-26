@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import moment from 'moment';
+import { TextField } from '@material-ui/core';
 
 class Clock extends React.Component{
     constructor() {
@@ -34,8 +35,8 @@ class Clock extends React.Component{
 class Button extends React.Component{
     render() {
         return (
-            <div className="btnDiv" onClick={this.props.onClick}>
-                <a className="btn" href="#">
+            <div className="btnDiv">
+                <a className="btn" href="#" onClick={this.props.onClick}>
                     <b>{this.props.started? "Stop" : "Start"}</b>
                 </a>
             </div>
@@ -46,11 +47,23 @@ class Button extends React.Component{
 class Record extends React.Component{
     render() {
         return (<div className="record">
-                <div className="recordTime">
-                    <div className="recordStartTime">{this.props.startTime}</div>
-                    <div className="recordEndTime">{this.props.endTime}</div>
+                    <div className="timeline">
+                        <div className="container right">
+                            <div className="recordStartTime">{this.props.startTime}</div>
+                        </div>
+                        <div className="endcontainer right">
+                            <div className="recordEndTime">{this.props.endTime}</div>
+                        </div>
+                    </div>
+                <div className="recordSummary">
+                    <TextField label="Summary" variant="outlined" />
+                    <select>
+                        <option value="">--Please choose an option--</option>
+                        <option value="work">Work</option>
+                        <option value="zoom">Zoom Call</option>
+                        <option value="time pass">TimePass</option>
+                    </select>
                 </div>
-                <div className="recordSummary"><input type="text"/></div>
             </div>
         );
     }
