@@ -1,50 +1,89 @@
-body {
-    font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
+#clock {
+    font-family: Roboto;
+    width: 100vw;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: #000000;
+    background-color: #111;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+#clock h1 {
+    font-size: 7em;
+    cursor: pointer;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+}
+#clock h1::-moz-selection {
+    background-color: transparent;
+}
+#clock h1::selection {
+    background-color: transparent;
+}
+.faded {
+    opacity: 0;
+}
+#instruction {
+    position: absolute;
+    width: 100vw;
+    text-align: center;
+    color: #fff;
+    font-family: Roboto;
+    font-size: 18px;
 }
 
-ol, ul {
-    padding-left: 30px;
+.btn {
+    display: flex;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 1px solid red;
+    background-color: red;
+    align-items: center;
+    justify-content: center;
 }
 
-.board-row:after {
-    clear: both;
-    content: "";
-    display: table;
+.btnDiv {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
 }
 
-.status {
+.records {
+    overflow: auto;
+    height: 50vh;
+}
+
+.record {
+    display: flex;
+    padding: 5px;
+    margin-top: 5px;
+    border-top: solid grey 1px;
+}
+
+.recordTime {
+    width: 10%;
+}
+
+.recordEndTime {
+    height: 2vh;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 34px;
+.recordStartTime {
+    height: 2vh;
+    margin-top: 10px;
 }
 
-.square:focus {
-    outline: none;
-}
-
-.kbd-navigation .square:focus {
-    background: #ddd;
-}
-
-.game {
+.recordSummary {
+    align-items: center;
     display: flex;
-    flex-direction: row;
 }
 
-.game-info {
-    margin-left: 20px;
-}

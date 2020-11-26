@@ -1,88 +1,111 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import moment from 'moment';
 
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
+class Clock extends React.Component{
+    constructor() {
+        super()
+        this.state = {
+            time: moment().format('LTS'),
+            background: {
+                backgroundColor: "white"
+            },
+            class: ''
+        }
+    }
+    componentDidMount() {
+        setInterval(()=>{
+            this.setState({
+                time: moment().format('LTS')
+            })
+        },1000)
+    }
+    render() {
+        return(
+            <div id="clock" style={this.state.background} onClick={this.clicked}>
+                <h1 className={this.state.class}>{this.state.time}</h1>
+            </div>
+        )
+    }
 }
 
-class Board extends React.Component {
+
+class Button extends React.Component{
+    render() {
+        return (
+            <div className="btnDiv" onClick={this.props.onClick}>
+                <a className="btn" href="#">
+                    <b>{this.props.started? "Stop" : "Start"}</b>
+                </a>
+            </div>
+        )
+    }
+}
+
+class Record extends React.Component{
+    render() {
+        return (<div className="record">
+                <div className="recordTime">
+                    <div className="recordStartTime">{this.props.startTime}</div>
+                    <div className="recordEndTime">{this.props.endTime}</div>
+                </div>
+                <div className="recordSummary"><input type="text"/></div>
+            </div>
+        );
+    }
+}
+
+class Records extends React.Component{
+
+    render() {
+        let list = this.props.records.slice().reverse()
+        const records = list.map(
+            (record) =>
+                <Record
+                    startTime={record.startTime}
+                    endTime ={record.endTime}
+                />
+
+        );
+        return (<div className="records">{ records }</div>);
+    }
+}
+
+class App extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9).fill(null),
-            xIsNext: true,
-        };
-    }
-
-    handleClick(i) {
-        const squares = this.state.squares.slice();
-        if(squares[i] == null){
-            squares[i] = this.state.xIsNext ? 'X' : 'O';
-            this.setState({
-                squares: squares,
-                xIsNext: !this.state.xIsNext,
-            });
+            records: [],
+            hasStarted: false,
         }
     }
 
-    renderSquare(i) {
-        return <Square
-            value={this.state.squares[i]}
-            onClick={() => this.handleClick(i)}
-        />;
+    track(){
+        if(this.state.hasStarted){
+            let element = this.state.records.pop();
+            element.endTime = moment().format('LTS');
+            this.state.records.push(element);
+        } else {
+            this.state.records.push({"startTime":moment().format('LTS')});
+        }
+        this.state.hasStarted = !this.state.hasStarted;
+        this.setState({
+            records: this.state.records,
+            hasStarted: this.state.hasStarted
+        });
     }
 
     render() {
-        const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-
-        return (
+        return(
             <div>
-            <div className="status">{status}</div>
-            <div className="board-row">
-            {this.renderSquare(0)}
-        {this.renderSquare(1)}
-        {this.renderSquare(2)}
-    </div>
-        <div className="board-row">
-            {this.renderSquare(3)}
-        {this.renderSquare(4)}
-        {this.renderSquare(5)}
-    </div>
-        <div className="board-row">
-            {this.renderSquare(6)}
-        {this.renderSquare(7)}
-        {this.renderSquare(8)}
-    </div>
-        </div>
-    );
+                <Clock/>
+                <Button started={this.state.hasStarted} onClick={() => this.track()}/>
+                <Records records={this.state.records}/>
+            </div>
+        )
     }
 }
 
-class Game extends React.Component {
-    render() {
-        return (
-            <div className="game">
-            <div className="game-board">
-            <Board />
-            </div>
-            <div className="game-info">
-            <div>{/* status */}</div>
-            <ol>{/* TODO */}</ol>
-            </div>
-            </div>
-    );
-    }
-}
-
-// ========================================
-
-ReactDOM.render(
-<Game />,
-    document.getElementById('root')
-);
-
+ReactDOM.render(<App/>,document.getElementById('app'))
